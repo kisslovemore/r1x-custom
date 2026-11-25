@@ -40,3 +40,6 @@ docs/screenshots/*.html
 
 # 安装包只挂 Release，不放进仓库（17MB，且容易出现同名同版本的两份）
 *.fpk
+
+# 本地编译产物（勿入库）
+r1-toolbox

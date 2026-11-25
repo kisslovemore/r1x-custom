@@ -184,7 +184,7 @@ func main() {
 	fanCtrl.SetHDDTempSource(func() float64 { return mon.Disk.MaxDiskTemp() })
 	fanCtrl.Init()
 
-	rgbCtrl := hardware.NewRGBController()
+	rgbCtrl := hardware.NewRGBController(cfg.RGB.I2CBus)
 	rgbCtrl.SetMode(cfg.RGB.Mode, cfg.RGB.Color)
 
 	// 背光路径：配置优先，为空则现场探测。配置里存的是完整绝对路径，
@@ -447,11 +447,19 @@ func main() {
 
 	lastDataGen := uint64(0)
 	lastNightCheck := time.Now()
+	prevOff := screenCtl.IsOff()
 	var lastBeat time.Time
 	beatEvery := watchdog.Interval()
 
 	for running {
 		frameStart := time.Now()
+
+		// 唤醒边沿：任何来源（Web /api/screen/on、触摸、界面按钮）把屏从关点亮，
+		// 都把空闲计时重置到当前帧，避免点亮瞬间被超时判定立刻关回。
+		if !screenCtl.IsOff() && prevOff {
+			lastTouchTime = frameStart
+		}
+		prevOff = screenCtl.IsOff()
 
 		// ---------------- SDL 事件 ----------------
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {

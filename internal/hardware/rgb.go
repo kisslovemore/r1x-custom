@@ -21,8 +21,11 @@ type RGBController struct {
 	mu sync.Mutex
 }
 
-func NewRGBController() *RGBController {
-	return &RGBController{bus: "0"}
+func NewRGBController(bus string) *RGBController {
+	if bus == "" {
+		bus = "1"
+	}
+	return &RGBController{bus: bus}
 }
 
 func (r *RGBController) i2cSet(register, value int) error {

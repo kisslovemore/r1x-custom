@@ -584,7 +584,7 @@ func (s *Server) handleAlertsTest(c *gin.Context) {
 		c.JSON(400, gin.H{"error": "尚未设置 Bark 地址"})
 		return
 	}
-	if err := s.Bark.Push("R1 测试", "这是一条测试通知，收到即通道正常"); err != nil {
+	if err := s.Bark.Push("R1x 测试", "这是一条测试通知，收到即通道正常"); err != nil {
 		c.JSON(502, gin.H{"error": err.Error()})
 		return
 	}

@@ -354,7 +354,6 @@
           :title="c.t" @click="setRGBColor(c.v)"></span>
           </div>
           </div>
-          <div class="hint mt">R1 前屏硬件没有系统级灯效控制通路，这里写入可能无可见效果。</div>
           </div>
           </section>
 
